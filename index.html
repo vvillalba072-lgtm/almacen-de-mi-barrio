@@ -1,0 +1,512 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Cocina de Doña Marta | Comida con Propósito</title>
+    <!-- Tailwind CSS para estilos rápidos y modernos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuentes de Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #fdfbf7; /* Crema suave */
+            color: #4a4a4a;
+        }
+        h1, h2, h3, .handwritten {
+            font-family: 'Dancing Script', cursive;
+        }
+        .primary-color {
+            color: #c05621; /* Terracota cálido */
+        }
+        .bg-primary {
+            background-color: #c05621;
+        }
+        .bg-primary:hover {
+            background-color: #9c4221;
+        }
+        
+        /* Animación suave para el carrito */
+        .cart-modal {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+        .cart-modal.open {
+            transform: translateX(0);
+        }
+
+        /* Estilo de imagen suave */
+        .food-card img {
+            border-radius: 1rem 1rem 0 0;
+            object-fit: cover;
+            height: 200px;
+            width: 100%;
+        }
+
+        /* Animación del Modal de Confirmación */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Navegación -->
+    <nav class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold primary-color handwritten">La Cocina de Doña Marta</a>
+            
+            <button onclick="toggleCart()" class="relative p-2 text-gray-600 hover:text-orange-700 transition">
+                <i data-lucide="shopping-basket" class="w-8 h-8"></i>
+                <span id="cart-count" class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center transform scale-0 transition-transform duration-200">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Portada) -->
+    <header class="relative h-[65vh] flex items-center justify-center text-center bg-gray-900">
+        <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Comida casera" class="absolute inset-0 w-full h-full object-cover opacity-60">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60"></div>
+        <div class="relative z-10 px-6 max-w-3xl">
+            <span class="inline-block py-1 px-4 rounded-full bg-orange-100 text-orange-800 text-sm font-semibold mb-6 tracking-wide shadow-md">♥ HECHO CON AMOR Y DEDICACIÓN</span>
+            <h1 class="text-6xl md:text-8xl text-white mb-6 drop-shadow-lg handwritten">Sabor a Corazón</h1>
+            <p class="text-xl md:text-2xl text-orange-50 mb-10 font-light leading-relaxed">
+                De la escuela a tu mesa. Comida casera honesta, preparada por manos trabajadoras que saben que cocinar es una forma de cuidar.
+            </p>
+            <a href="#menu" class="bg-primary text-white px-10 py-4 rounded-full text-xl font-bold hover:shadow-2xl transition transform hover:-translate-y-1 hover:bg-orange-700">
+                Ver Menú Semanal
+            </a>
+        </div>
+    </header>
+
+    <!-- Sección de Historia (Storytelling Actualizado) -->
+    <section class="py-20 px-4 bg-orange-50">
+        <div class="max-w-5xl mx-auto text-center md:text-left md:flex items-center gap-16">
+            <div class="md:w-1/2 mb-10 md:mb-0 relative">
+                <div class="absolute -inset-4 bg-orange-200 rounded-full opacity-50 blur-2xl"></div>
+                <!-- Placeholder para foto de Marta cocinando o con un perrito -->
+                <img src="https://images.unsplash.com/photo-1556910103-1c02745a30bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Marta Cocinando" class="relative rounded-2xl shadow-2xl transform rotate-2 hover:rotate-0 transition duration-500 w-full object-cover h-96">
+            </div>
+            <div class="md:w-1/2">
+                <h2 class="text-5xl primary-color mb-8 handwritten">Manos que cuidan</h2>
+                
+                <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                    ¡Hola! Soy Marta. Seguramente me has visto en la <strong>escuela</strong>, corriendo de un lado a otro ayudando en la cocina o dejando todo brillante. Soy una mujer de trabajo y esfuerzo, pero mi verdadero lenguaje es la comida.
+                </p>
+                
+                <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                    Cocinar para mí es dar amor. No solo cocino para mi familia o mis clientes; si me conoces, sabes que siempre tengo una olla de arroz con algo rico para mis <strong>amigos de cuatro patas</strong> que viven en la calle. Ellos también merecen llenarse la barriga con algo hecho con cariño.
+                </p>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-orange-500">
+                    <p class="italic text-gray-600">
+                        "Al comprar aquí, no solo llevas comida rica a tu mesa, sino que apoyas un sueño que busca crecer y seguir ayudando."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cómo Funciona -->
+    <section class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-4xl text-center mb-16 handwritten primary-color">Pasos para disfrutar</h2>
+            <div class="grid md:grid-cols-3 gap-12 text-center">
+                <div class="group">
+                    <div class="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="calendar-heart" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">1. Reserva tu Plato</h3>
+                    <p class="text-gray-600 px-4">Cocino cantidades limitadas para garantizar el sabor. Asegura tu porción con tiempo.</p>
+                </div>
+                <div class="group">
+                    <div class="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="message-circle-heart" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">2. Confirma por WhatsApp</h3>
+                    <p class="text-gray-600 px-4">Hablamos directamente. Sin robots ni aplicaciones frías. Trato directo conmigo.</p>
+                </div>
+                <div class="group">
+                    <div class="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="utensils-crossed" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">3. Sabor Casero Real</h3>
+                    <p class="text-gray-600 px-4">Comida que sabe a hogar, hecha por alguien que ama lo que hace.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menú -->
+    <section id="menu" class="py-16 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <span class="text-sm uppercase tracking-widest text-gray-500 font-bold">Edición Limitada | Fin de Semana</span>
+                <h2 class="text-5xl primary-color mt-3 handwritten">Menú Especial</h2>
+            </div>
+
+            <!-- Grid de Productos (Se llena con JS) -->
+            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Los productos se insertan aquí automáticamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 border-t-4 border-orange-600">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <h2 class="text-4xl handwritten mb-4">La Cocina de Doña Marta</h2>
+            <p class="text-gray-400 mb-6 max-w-md mx-auto">Gracias por apoyar a los emprendedores locales y ayudarme a seguir cocinando con el corazón.</p>
+            <div class="flex justify-center gap-8 mb-8">
+                <a href="#" class="hover:text-orange-400 transition transform hover:scale-110"><i data-lucide="instagram" class="w-8 h-8"></i></a>
+                <a href="#" class="hover:text-orange-400 transition transform hover:scale-110"><i data-lucide="facebook" class="w-8 h-8"></i></a>
+            </div>
+            <p class="text-sm text-gray-500">© 2024. Hecho con ♥ para Doña Marta.</p>
+        </div>
+    </footer>
+
+    <!-- Modal del Carrito -->
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden transition-opacity opacity-0"></div>
+    
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-full md:w-96 bg-white shadow-2xl z-50 cart-modal flex flex-col">
+        <div class="p-6 border-b flex justify-between items-center bg-orange-50">
+            <h2 class="text-3xl handwritten primary-color">Tu Canasta</h2>
+            <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 transition">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+        </div>
+
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-6">
+            <!-- Items del carrito aquí -->
+        </div>
+
+        <div class="p-6 border-t bg-gray-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+            <div class="flex justify-between text-2xl font-bold mb-6 text-gray-800">
+                <span>Total:</span>
+                <span id="cart-total">$0</span>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">¿Cómo te llamas?</label>
+                    <input type="text" id="customer-name" class="w-full border-gray-300 rounded-lg shadow-sm p-3 border focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition" placeholder="Tu nombre para el pedido">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Entrega</label>
+                    <select id="delivery-method" class="w-full border-gray-300 rounded-lg shadow-sm p-3 border focus:ring-2 focus:ring-orange-500 outline-none bg-white">
+                        <option value="Retiro en local">Paso a buscarlo (Gratis)</option>
+                        <option value="Envío a domicilio">Envío a domicilio (A coordinar)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="prepareOrder()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition flex items-center justify-center gap-3 shadow-lg transform active:scale-95">
+                <span>Continuar Pedido</span>
+                <i data-lucide="arrow-right" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación Pre-WhatsApp (NUEVO) -->
+    <div id="confirmation-modal" class="fixed inset-0 z-[60] hidden flex items-center justify-center px-4">
+        <!-- Fondo oscuro -->
+        <div class="absolute inset-0 bg-gray-900 bg-opacity-90 backdrop-blur-sm transition-opacity"></div>
+        
+        <!-- Tarjeta -->
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full relative z-10 p-8 text-center fade-in transform transition-all">
+            <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="check" class="w-12 h-12 text-green-600"></i>
+            </div>
+            
+            <h3 class="text-3xl font-bold text-gray-800 mb-2 handwritten primary-color">¡Excelente elección!</h3>
+            <p class="text-gray-600 mb-6 text-lg">
+                Ya casi terminamos. Ahora te llevaremos al WhatsApp de Marta para enviarle el detalle de tu pedido.
+            </p>
+            
+            <div class="bg-orange-50 p-4 rounded-xl mb-8 text-left border border-orange-100">
+                <p class="text-sm text-orange-800 font-semibold mb-1 flex items-center gap-2">
+                    <i data-lucide="heart-handshake" class="w-4 h-4"></i> Recuerda:
+                </p>
+                <p class="text-sm text-gray-600">
+                    Marta cocina y atiende personalmente. Si no responde al instante, es porque está ocupada preparando algo rico. ¡Ten paciencia, te responderá pronto!
+                </p>
+            </div>
+
+            <button onclick="finalizeOrder()" class="w-full bg-green-500 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-600 transition shadow-lg flex items-center justify-center gap-2 animate-pulse">
+                <i data-lucide="message-circle" class="w-6 h-6"></i>
+                Abrir WhatsApp Ahora
+            </button>
+            
+            <button onclick="closeConfirmation()" class="mt-4 text-gray-400 hover:text-gray-600 text-sm font-medium underline">
+                Volver atrás
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN
+        const PHONE_NUMBER = "5491112345678"; // CAMBIAR AQUÍ
+        
+        const products = [
+            {
+                id: 1,
+                name: "Pastel de Papa Casero",
+                description: "Carne picada especial, aceitunas, huevo duro y un puré cremoso y gratinado. Porción abundante.",
+                price: 4500,
+                image: "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 2,
+                name: "Canelones de Verdura y Ricota",
+                description: "Masa casera, rellenos de espinaca fresca y ricota, con salsa mixta (fileto y blanca). Docena.",
+                price: 5200,
+                image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 3,
+                name: "Guiso de Lentejas Especial",
+                description: "Ideal para el frío. Con chorizo colorado, panceta y verduras cortadas a mano.",
+                price: 3800,
+                image: "https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 4,
+                name: "Empanadas de Carne (Docena)",
+                description: "Carne cortada a cuchillo, fritas o al horno. Jugosas y con la receta de la abuela.",
+                price: 6000,
+                image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 5,
+                name: "Flan Casero con Dulce",
+                description: "Con docena de huevos, caramelo casero y una cucharada generosa de dulce de leche.",
+                price: 2500,
+                image: "https://images.unsplash.com/photo-1551024601-564d6d674cd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+             {
+                id: 6,
+                name: "Pan Casero de Campo",
+                description: "Redondo, con costra crocante y miga suave. Ideal para acompañar las comidas.",
+                price: 1500,
+                image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        let cart = [];
+        let pendingWhatsAppUrl = ""; // Variable para guardar el link temporalmente
+
+        // Inicializar Iconos
+        lucide.createIcons();
+
+        // Renderizar Productos
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = products.map(product => `
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 flex flex-col food-card group">
+                    <div class="relative overflow-hidden">
+                        <img src="${product.image}" alt="${product.name}" class="group-hover:scale-105 transition duration-500">
+                        <div class="absolute bottom-0 right-0 bg-white px-3 py-1 rounded-tl-lg font-bold text-lg text-orange-600 shadow-sm">
+                            $${product.price}
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-gray-800 leading-tight">${product.name}</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 flex-1">${product.description}</p>
+                        <button onclick="addToCart(${product.id})" class="w-full bg-orange-100 text-orange-700 py-3 rounded-xl font-bold hover:bg-orange-200 transition flex items-center justify-center gap-2 hover:shadow-md">
+                            <i data-lucide="plus-circle" class="w-5 h-5"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Lógica del Carrito
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            updateCartUI();
+            
+            // Animación de botón
+            const btn = event.currentTarget;
+            const originalContent = btn.innerHTML;
+            btn.classList.remove('bg-orange-100', 'text-orange-700');
+            btn.classList.add('bg-green-100', 'text-green-700');
+            btn.innerHTML = `<span class="font-bold flex items-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> ¡Listo!</span>`;
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.classList.add('bg-orange-100', 'text-orange-700');
+                btn.classList.remove('bg-green-100', 'text-green-700');
+                lucide.createIcons();
+            }, 1000);
+
+            if(cart.length === 1 && cart[0].quantity === 1) {
+                toggleCart(true);
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCartUI();
+                }
+            }
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const countBadge = document.getElementById('cart-count');
+            countBadge.innerText = totalCount;
+            
+            if (totalCount > 0) {
+                countBadge.classList.remove('scale-0');
+            } else {
+                countBadge.classList.add('scale-0');
+            }
+
+            const cartContainer = document.getElementById('cart-items');
+            const totalContainer = document.getElementById('cart-total');
+            
+            if (cart.length === 0) {
+                cartContainer.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-400">
+                        <div class="bg-gray-100 p-6 rounded-full mb-4">
+                            <i data-lucide="soup" class="w-12 h-12 text-gray-300"></i>
+                        </div>
+                        <p class="font-medium">Tu canasta está vacía</p>
+                        <p class="text-sm">¡Elige algo rico del menú!</p>
+                    </div>`;
+                totalContainer.innerText = '$0';
+            } else {
+                let total = 0;
+                cartContainer.innerHTML = cart.map(item => {
+                    total += item.price * item.quantity;
+                    return `
+                        <div class="flex items-center justify-between border-b border-gray-100 pb-4 last:border-0">
+                            <div class="flex-1 pr-4">
+                                <h4 class="font-bold text-gray-800 mb-1">${item.name}</h4>
+                                <div class="text-sm text-gray-500 font-medium">$${item.price} c/u</div>
+                            </div>
+                            <div class="flex items-center gap-3 bg-gray-50 rounded-lg p-1">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="w-8 h-8 rounded-md bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-red-500 transition font-bold text-lg">-</button>
+                                <span class="w-4 text-center text-sm font-bold text-gray-800">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="w-8 h-8 rounded-md bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-green-500 transition font-bold text-lg">+</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                totalContainer.innerText = `$${total}`;
+            }
+            lucide.createIcons();
+        }
+
+        function toggleCart(forceOpen = null) {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            const isOpen = sidebar.classList.contains('open');
+            
+            if (forceOpen === true || (!isOpen && forceOpen !== false)) {
+                sidebar.classList.add('open');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        // --- LÓGICA DE CONFIRMACIÓN ---
+
+        function prepareOrder() {
+            if (cart.length === 0) {
+                alert("Agrega productos al carrito primero :)");
+                return;
+            }
+
+            const name = document.getElementById('customer-name').value.trim();
+            if (!name) {
+                alert("Por favor, escribe tu nombre para saber quién eres.");
+                document.getElementById('customer-name').focus();
+                return;
+            }
+
+            const deliveryMethod = document.getElementById('delivery-method').value;
+            let total = 0;
+            
+            // 1. Construir mensaje
+            let message = `*¡Hola Marta! Quiero hacer un pedido.* 👋%0A%0A`;
+            message += `*Cliente:* ${name}%0A`;
+            message += `*Entrega:* ${deliveryMethod}%0A%0A`;
+            message += `*--- MI PEDIDO ---*%0A`;
+
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                message += `- ${item.quantity}x ${item.name} ($${subtotal})%0A`;
+            });
+
+            message += `%0A*TOTAL FINAL: $${total}*%0A%0A`;
+            message += `¿Me confirmas si está disponible? Muchas gracias.`;
+
+            // 2. Guardar URL
+            pendingWhatsAppUrl = `https://wa.me/${PHONE_NUMBER}?text=${message}`;
+
+            // 3. Cerrar carrito y mostrar modal de confirmación
+            toggleCart(false);
+            showConfirmation();
+        }
+
+        function showConfirmation() {
+            const modal = document.getElementById('confirmation-modal');
+            modal.classList.remove('hidden');
+        }
+
+        function closeConfirmation() {
+            const modal = document.getElementById('confirmation-modal');
+            modal.classList.add('hidden');
+        }
+
+        function finalizeOrder() {
+            window.open(pendingWhatsAppUrl, '_blank');
+            closeConfirmation();
+            // Opcional: Limpiar carrito después de enviar
+            // cart = [];
+            // updateCartUI();
+        }
+
+        // Inicializar
+        renderProducts();
+
+    </script>
+</body>
+</html>
